@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  KASSUBAG_KUL
+  ADMIN
+  STAFF
+}
+
+model Account {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  email     String   @unique
+  password  String
+  role      Role     @default(STAFF)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Warehouse {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  name      String
+  location  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  shelves   Shelf[]
+  archives  Archive[]
+}
+
+model Shelf {
+  id           String   @id @default(cuid())
+  code         String
+  warehouseId  String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  warehouse    Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+  archives     Archive[]
+
+  @@unique([code, warehouseId])
+}
+
+model Archive {
+  id             String   @id @default(cuid())
+  name           String
+  code           String
+  subBagCode     String
+  yearCreated    Int
+  retentionPeriod Int
+  shelfId        String
+  warehouseId    String
+  filePath       String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  shelf          Shelf    @relation(fields: [shelfId], references: [id], onDelete: Restrict)
+  warehouse      Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+
+  movements      MovementHistory[]
+  borrowings     BorrowHistory[]
+
+  @@unique([code, warehouseId])
+}
+
+model MovementHistory {
+  id           String   @id @default(cuid())
+  archiveId    String
+  archiveName  String
+  archiveCode  String
+  previousShelf String
+  newShelf     String
+  movedAt      DateTime @default(now())
+  movedBy      String
+
+  archive      Archive  @relation(fields: [archiveId], references: [id], onDelete: Cascade)
+}
+
+model BorrowHistory {
+  id           String   @id @default(cuid())
+  archiveId    String
+  archiveName  String
+  archiveCode  String
+  borrowerName String
+  borrowedAt   DateTime @default(now())
+  returnedAt   DateTime?
+
+  archive      Archive  @relation(fields: [archiveId], references: [id], onDelete: Cascade)
+}

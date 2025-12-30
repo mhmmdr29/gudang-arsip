@@ -1,0 +1,62 @@
+
+      <Dialog open={editMovementDialog} onOpenChange={setEditMovementDialog}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Edit Riwayat Pemindahan</DialogTitle>
+            <DialogDescription>Edit informasi riwayat pemindahan arsip</DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="edit-archiveName">Nama Arsip</Label>
+              <Input
+                id="edit-archiveName"
+                value={editMovementFormData.archiveName}
+                onChange={(e) => setEditMovementFormData({ ...editMovementFormData, archiveName: e.target.value })}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="edit-archiveCode">Kode Arsip</Label>
+              <Input
+                id="edit-archiveCode"
+                value={editMovementFormData.archiveCode}
+                onChange={(e) => setEditMovementFormData({ ...editMovementFormData, archiveCode: e.target.value })}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="edit-previousShelf">Rak Sebelum</Label>
+              <Input
+                id="edit-previousShelf"
+                value={editMovementFormData.previousShelf}
+                onChange={(e) => setEditMovementFormData({ ...editMovementFormData, previousShelf: e.target.value })}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="edit-newShelf">Rak Sesudah</Label>
+              <Input
+                id="edit-newShelf"
+                value={editMovementFormData.newShelf}
+                onChange={(e) => setEditMovementFormData({ ...editMovementFormData, newShelf: e.target.value })}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="edit-movedBy">Dipindahkan Oleh</Label>
+              <Input
+                id="edit-movedBy"
+                value={editMovementFormData.movedBy}
+                onChange={(e) => setEditMovementFormData({ ...editMovementFormData, movedBy: e.target.value })}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditMovementDialog(false)}>
+              Batal
+            </Button>
+            <Button onClick={handleSaveMovement}>
+              Simpan
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  )
+}
