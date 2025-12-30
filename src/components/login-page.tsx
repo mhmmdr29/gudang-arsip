@@ -25,6 +25,17 @@ export default function LoginPage() {
         body: JSON.stringify({ username, password }),
       })
 
+      // Cek Content-Type sebelum parse JSON
+      const contentType = response.headers.get('content-type')
+      const isJson = contentType && contentType.includes('application/json')
+
+      if (!isJson) {
+        // Response adalah HTML, ambil text untuk debugging
+        const text = await response.text()
+        console.error('API returned HTML instead of JSON:', text.substring(0, 500))
+        throw new Error('Server error: API mengembalikan response yang tidak valid')
+      }
+
       const data = await response.json()
 
       if (!response.ok) {
