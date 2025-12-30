@@ -1,0 +1,88 @@
+name: Build and Create ZIP
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build-and-zip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Create ZIP file
+        run: |
+          # Create ZIP with exclude patterns
+          echo "Creating ZIP file..."
+
+          # List of files/directories to exclude
+          EXCLUDE_DIRS="node_modules .next .git .github prisma/migrations"
+
+          # Create temp directory
+          rm -rf /tmp/zip_content
+          mkdir -p /tmp/zip_content
+
+          # Copy all files except excluded
+          for item in *; do
+            if [[ ! "$EXCLUDE_DIRS" =~ "$item" ]] && [[ ! "$item" == .* ]]; then
+              cp -r "$item" /tmp/zip_content/
+            fi
+          done
+
+          # Copy hidden directories except .git and .next
+          for item in .*; do
+            if [[ "$item" != "." && "$item" != ".." && "$item" != ".git" && "$item" != ".next" ]]; then
+              cp -r "$item" /tmp/zip_content/
+            fi
+          done
+
+          # Create ZIP
+          cd /tmp/zip_content
+          zip -r ../gudang-arsip.zip .
+
+          # Get file size
+          SIZE=$(du -h ../gudang-arsip.zip | cut -f1)
+          echo "✅ ZIP created: gudang-arsip.zip ($SIZE)"
+
+      - name: Upload ZIP as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gudang-arsip-zip
+          path: /tmp/gudang-arsip.zip
+          retention-days: 90
+          if-no-files-found: warn
+
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: /tmp/gudang-arsip.zip
+          draft: false
+          generate_release_notes: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: ZIP Created Summary
+        run: |
+          SIZE=$(du -h /tmp/gudang-arsip.zip | cut -f1)
+          echo "## 📦 ZIP File Created" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Filename:** \`gudang-arsip.zip\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Size:** $SIZE" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📥 Download from Artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "1. Go to: **Actions** tab" >> $GITHUB_STEP_SUMMARY
+          echo "2. Click on: **Build and Create ZIP** workflow" >> $GITHUB_STEP_SUMMARY
+          echo "3. Scroll to: **Artifacts** section" >> $GITHUB_STEP_SUMMARY
+          echo "4. Download: \`gudang-arsip-zip\`" >> $GITHUB_STEP_SUMMARY
