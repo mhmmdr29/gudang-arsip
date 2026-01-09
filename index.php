@@ -1,177 +1,101 @@
 <?php
-/**
-|--------------------------------------------------------------------------
-|  APPLICATION DIRECTORY NAME
-|--------------------------------------------------------------------------
-|
-| If you use this application as a subfolder of the main website,
-| change the value here: /
-|
-| http://example.com/ --> /
-| http://example.com/codeigniter/ --> /codeigniter/
-|
-*/
-$application_folder = 'application';
-
-/**
-|--------------------------------------------------------------------------
-|  SYSTEM DIRECTORY NAME
-|--------------------------------------------------------------------------
-|
-| This variable must contain the name of your system folder.
-| The system folder can also be named something other than application or system
-| if you want more security you should rename it.
-|
-*/
-$system_folder = 'system';
-
-/**
-|--------------------------------------------------------------------------
-|  INDEX FILE
-|--------------------------------------------------------------------------
-|
-| Typically this will be your index.php file, unless you've renamed it to
-| something else. In that case, you should specify the name here.
-|
-*/
-$index_page = 'index.php';
-
-/**
-|--------------------------------------------------------------------------
-|  URL PROTOCOL
-|--------------------------------------------------------------------------
-|
-| Set to FORCE_HTTPS or FORCE_HTTP based on your needs.
-|
-*/
-define('URL_PROTOCOL', empty($_SERVER['HTTPS']) ? 'http' : 'https');
-
-/**
-|--------------------------------------------------------------------------
-|  BASE URL
-|--------------------------------------------------------------------------
-|
-| Base URL of your site.
-|
-*/
-// Change this to your base URL
-$base_url = 'http://localhost:3000';
-
-/**
-|--------------------------------------------------------------------------
-|  AUTOLOAD CONTROLLER
-|--------------------------------------------------------------------------
-|
-| Set to TRUE if you want to use auto-loading for controllers.
-|
-*/
-$autoload['packages'] = array();
-
-/**
-|--------------------------------------------------------------------------
-|  AUTOLOAD HELPER
-|--------------------------------------------------------------------------
-|
-| Set to TRUE if you want to use auto-loading for helpers.
-|
-*/
-$autoload['helper'] = array('url', 'form');
-
-/**
-|--------------------------------------------------------------------------
-|  AUTOLOAD LIBRARIES
-|--------------------------------------------------------------------------
-|
-| Set to TRUE if you want to use auto-loading for libraries.
-|
-*/
-$autoload['libraries'] = array('session', 'database', 'form_validation');
-
-/**
-|--------------------------------------------------------------------------
-|  ERROR LOGGING
-|--------------------------------------------------------------------------
-|
-| Set to TRUE if you want to see errors.
-|
-*/
-define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
-
-/**
-|--------------------------------------------------------------------------
-|  DATABASE CONFIG
-|--------------------------------------------------------------------------
-|
-| Database connection settings are stored in application/config/database.php
-|
-*/
-
-/**
-|--------------------------------------------------------------------------
-|  COMPOSED VIEWS
-|--------------------------------------------------------------------------
-|
-| Set to TRUE if you want to use CodeIgniter's composed view.
-|
-*/
-$autoload['view'] = array('templates/dashboard', 'templates/');
-
 /*
 |--------------------------------------------------------------------------
-|  ROUTES
+| Entry Point for Application
 |--------------------------------------------------------------------------
-|
-| You can override the default routing here.
-|
 */
-$route['default_controller'] = 'application';
+define('BASEPATH', dirname(__DIR__) . '/system');
+define('APPPATH', dirname(__DIR__) . '/application/');
 
-/*
-|--------------------------------------------------------------------------
-|  CUSTOM CONFIG VALUES
-|--------------------------------------------------------------------------
-|
-| Add your custom config values here or override existing values.
-|
-*/
+// Check if application exists
+if (!is_dir(APPPATH)) {
+    header('HTTP/1.1 503 Service Unavailable');
+    echo 'Your application folder path does not appear to be set correctly.';
+    exit(3);
+}
 
+// Load CodeIgniter
 require_once BASEPATH . 'core/CodeIgniter.php';
 
-require_once BASEPATH . 'core/Common.php';
-
 /*
 |--------------------------------------------------------------------------
-|  RUN APP
+| Run Application
 |--------------------------------------------------------------------------
 |
-| Load the CI framework and run the app.
+| Load framework and run application.
 |
 */
-if (file_exists(APPPATH . 'config/' . ENVIRONMENT . '/config.php')) {
-    require_once APPPATH . 'config/' . ENVIRONMENT . '/config.php';
+if (file_exists(APPPATH . 'config/' . ENVIRONMENT . '/routes.php')) {
+    require_once BASEPATH . 'core/Common.php';
+
+    $CI = &get_instance();
+    $CI->load = &load_class('Loader', 'core');
+    $CI->load->helper('url');
+    $CI->load->helper('security');
+
+    // Load routes
+    require_once APPPATH . 'config/' . ENVIRONMENT . '/routes.php';
+
+    // Get route
+    $uri = $CI->uri;
+
+    if (isset($routing['default_controller']) && $routing['default_controller']) {
+        $routing['default_controller'] = str_replace('/', '', $routing['default_controller']);
+    }
+
+    if (empty($uri->uri_string)) {
+        $uri->uri_string = $routing['default_controller'];
+    }
+
+    $CI->uri->rsegments = array_filter(explode('/', $uri->uri_string), 'strlen');
+
+    if (isset($routing['translate_uri_dashes']) && $routing['translate_uri_dashes']) {
+        $CI->uri->uri_string = str_replace('-', '_', $CI->uri->uri_string);
+        $CI->uri->rsegments = array_map(function($val) {
+            return str_replace('-', '_', $val);
+        }, $CI->uri->rsegments);
+    }
+
+    $rsegments = $CI->uri->rsegments;
+
+    if (isset($routing['default_controller']) && $routing['default_controller']) {
+        $CI->uri->uri_string = $routing['default_controller'];
+        $rsegments = array_filter(explode('/', $CI->uri->uri_string), 'strlen');
+    }
+
+    // Load controller
+    $CI->load->library('controller');
+
+    if (empty($uri->uri_string)) {
+        $CI->uri->uri_string = $routing['default_controller'];
+        $rsegments = array_filter(explode('/', $CI->uri->uri_string), 'strlen');
+    }
+
+    $rsegments_count = count($rsegments);
+    $class = isset($rsegments[0]) ? $rsegments[0] : $routing['default_controller'];
+
+    // Check if class exists
+    if (!class_exists(ucfirst($class))) {
+        show_404($CI);
+        exit(4);
+    }
+
+    $method = $CI->uri->segment(1);
+    if (empty($method)) {
+        $method = 'index';
+    }
+
+    if (!method_exists($class, $method)) {
+        show_404($CI);
+        exit(4);
+    }
+
+    // Call controller method
+    $CI = new $class();
+    $CI->$method();
 }
 
-require_once APPPATH . 'core/Common.php';
-
-if (file_exists(APPPATH . 'controllers/' . $routing['default_controller'] . '.php')) {
-    require_once APPPATH . 'controllers/' . $routing['default_controller'] . '.php';
+function show_404($CI) {
+    header('HTTP/1.1 404 Not Found');
+    echo $CI->load->view('errors/html/error_404', array(), TRUE);
 }
-
-$CI = & get_instance();
-$CI->uri = & load_class('URI', 'core');
-$CI->output = & load_class('Output', 'core');
-$CI->security = & load_class('Security', 'core');
-$CI->input = & load_class('Input', 'core');
-
-/*
-|--------------------------------------------------------------------------
-|  LOAD THE CONTROLLER
-|--------------------------------------------------------------------------
-*/
-include APPPATH . 'controllers/' . $routing['default_controller'] . '.php';
-
-/*
-|--------------------------------------------------------------------------
-|  END OF FILE
-|--------------------------------------------------------------------------
-*/
