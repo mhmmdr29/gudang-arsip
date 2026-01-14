@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Gudang Arsip ZIP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+        }
+        h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .download-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .download-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .download-btn {
+            display: block;
+            width: 100%;
+            padding: 15px 25px;
+            margin: 10px 0;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+        }
+        .download-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        .download-btn:active {
+            transform: translateY(0);
+        }
+        .file-info {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .file-info-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-size: 1rem;
+        }
+        .file-info-label {
+            font-weight: 600;
+            color: #555;
+        }
+        .file-info-value {
+            color: #333;
+        }
+        .instructions {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+        .instructions-title {
+            font-weight: bold;
+            color: #856404;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        .instructions-list {
+            color: #856404;
+            line-height: 1.8;
+            margin-left: 20px;
+        }
+        .instructions-list li {
+            margin: 10px 0;
+        }
+        .code {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            display: inline-block;
+            margin: 0 5px;
+            font-weight: bold;
+            color: #d63384;
+        }
+        .icon {
+            font-size: 2rem;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .download-btn {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📥 Gudang Arsip</h1>
+        <p class="subtitle">Download file project ZIP (4.27 MB)</p>
+
+        <div class="file-info">
+            <div class="file-info-row">
+                <span class="file-info-label">Nama File:</span>
+                <span class="file-info-value">gudang-arsip.zip</span>
+            </div>
+            <div class="file-info-row">
+                <span class="file-info-label">Ukuran:</span>
+                <span class="file-info-value">4.27 MB</span>
+            </div>
+            <div class="file-info-row">
+                <span class="file-info-label">Format:</span>
+                <span class="file-info-value">ZIP Archive</span>
+            </div>
+            <div class="file-info-row">
+                <span class="file-info-label">Isi:</span>
+                <span class="file-info-value">Next.js Project + SQLite Database</span>
+            </div>
+        </div>
+
+        <div class="download-section">
+            <div class="download-title">
+                <span class="icon">⬇️</span>
+                <span>OPSI DOWNLOAD</span>
+            </div>
+
+            <a href="gudang-arsip.zip" class="download-btn" download>
+                📥 Download ZIP File
+            </a>
+        </div>
+
+        <div class="instructions">
+            <div class="instructions-title">⚠️ CATATAN PENTING</div>
+            <ul class="instructions-list">
+                <li>Download file ZIP</li>
+                <li>Ekstrak ZIP ke folder di komputer Anda</li>
+                <li>Install <strong>Node.js</strong> atau <strong>Bun</strong> (bukan XAMPP!)</li>
+                <li>Buka terminal di folder project</li>
+                <li>Jalankan perintah <span class="code">bun install</span> atau <span class="code">npm install</span></li>
+                <li>Jalankan perintah <span class="code">bun run dev</span> atau <span class="code">npm run dev</span></li>
+                <li>Buka browser di <span class="code">http://localhost:3000</span></li>
+            </ul>
+        </div>
+
+        <div class="instructions" style="background: #f8d7da; border-left-color: #dc3545;">
+            <div class="instructions-title" style="color: #721c24;">🛑 JANGAN PAKAI XAMPP/APACHE</div>
+            <ul class="instructions-list" style="color: #721c24;">
+                <li>Ini adalah project <strong>Next.js</strong> (React + TypeScript)</li>
+                <li>XAMPP hanya untuk aplikasi <strong>PHP</strong></li>
+                <li>XAMPP tidak bisa menjalankan Next.js</li>
+                <li>JANGAN upload ke folder htdocs XAMPP</li>
+                <li>JANGAN konfigurasi Apache untuk Next.js</li>
+                <li>Gunakan <strong>Node.js</strong> atau <strong>Bun</strong> runtime</li>
+            </ul>
+        </div>
+
+        <div class="instructions" style="background: #d1ecf1; border-left-color: #0d6efd;">
+            <div class="instructions-title" style="color: #0c5460;">📚 AKUN LOGIN DEFAULT</div>
+            <ul class="instructions-list" style="color: #0c5460;">
+                <li><strong>Admin:</strong> admin / admin123</li>
+                <li><strong>Kassubag:</strong> kassubag / kassubag123</li>
+                <li><strong>Staff:</strong> staff / staff123</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Tampilkan pesan konfirmasi saat download dimulai
+        document.querySelector('.download-btn').addEventListener('click', function(e) {
+            alert('⬇️ Download dimulai!\n\nSetelah selesai:\n1. Ekstrak file ZIP\n2. Install Node.js atau Bun\n3. Jalankan: bun install\n4. Jalankan: bun run dev\n5. Buka: http://localhost:3000');
+        });
+    </script>
+</body>
+</html>

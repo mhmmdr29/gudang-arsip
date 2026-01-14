@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File.io Upload Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 900px;
+            width: 100%;
+            padding: 40px;
+        }
+        h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .step {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 2px solid #e9ecef;
+        }
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+        .step-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .step-content {
+            color: #555;
+            line-height: 1.8;
+        }
+        .step-content p {
+            margin: 10px 0;
+        }
+        .highlight {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .code {
+            background: #f1f3f4;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            display: inline-block;
+            font-weight: bold;
+            color: #d63384;
+        }
+        .icon {
+            font-size: 2rem;
+        }
+        .link-box {
+            background: #e7f3ff;
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .file-link {
+            font-size: 1.2rem;
+            color: #0066cc;
+            font-weight: bold;
+            word-break: break-all;
+        }
+        .important {
+            background: #ff4757;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .step {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📤 Upload ke File.io</h1>
+        <p class="subtitle">Ikuti langkah-langkah untuk upload file ZIP ke File.io</p>
+
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-title">Buka File.io</div>
+            <div class="step-content">
+                <p>Buka browser dan akses: <strong>https://file.io</strong></p>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-title">Login / Daftar</div>
+            <div class="step-content">
+                <p>Login dengan akun Anda atau daftar gratis di File.io</p>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-title">Akses File dari Server</div>
+            <div class="step-content">
+                <p>Buka link ini di browser (untuk mendownload file ke laptop Anda dulu):</p>
+                <div class="link-box">
+                    <a href="http://8.217.213.56:3000/gudang-arsip.zip" class="file-link" target="_blank">
+                        📥 Download: gudang-arsip.zip
+                    </a>
+                </div>
+                <div class="highlight">
+                    <p>Setelah selesai didownload, file ZIP ada di folder <strong>Downloads</strong> laptop Anda.</p>
+                    <p>Ingat lokasi file!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-title">Upload ke File.io</div>
+            <div class="step-content">
+                <p>Kembali ke File.io (tab browser yang sudah dibuka)</p>
+                <p>Klik tombol <strong class="code">"Upload"</strong> atau <strong class="code">"+"</strong></p>
+                <p>Pilih file <span class="code">gudang-arsip.zip</span> dari folder Downloads</p>
+                <p>Tunggu proses upload selesai</p>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-number">5</div>
+            <div class="step-title">Share Link</div>
+            <div class="step-content">
+                <p>Setelah upload selesai, File.io akan memberikan <strong>link sharing</strong></p>
+                <p>Klik tombol <strong class="code">"Copy Link"</strong> atau <strong class="code">"Share"</strong></p>
+                <p>Link sharing bisa Anda bagikan ke orang lain!</p>
+            </div>
+        </div>
+
+        <div class="important">
+            ⚠️ CATATAN: File.io menyimpan file selama 14 hari pada akun gratis
+        </div>
+
+        <div class="step">
+            <div class="step-number">6</div>
+            <div class="step-title">Download Link (Untuk Orang Lain)</div>
+            <div class="step-content">
+                <p>Orang lain bisa mendownload dengan link sharing yang sudah Anda copy.</p>
+                <p>Mereka bisa download dan ikuti langkah instalasi yang sama.</p>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-number">7</div>
+            <div class="step-title">Cara Instalasi (Setelah Didownload)</div>
+            <div class="step-content">
+                <p><strong>1. Ekstrak ZIP:</strong> Right-click → Extract All</p>
+                <p><strong>2. Install Bun/Node.js:</strong> Download dari bun.sh atau nodejs.org</p>
+                <p><strong>3. Install Dependencies:</strong> <span class="code">bun install</span></p>
+                <p><strong>4. Jalankan:</strong> <span class="code">bun run dev</span></p>
+                <p><strong>5. Buka:</strong> http://localhost:3000</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
